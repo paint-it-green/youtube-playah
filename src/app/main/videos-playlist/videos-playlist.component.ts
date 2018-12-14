@@ -14,6 +14,7 @@ export class VideosPlaylistComponent {
   @Input() playlistNames;
   @Input() repeat;
   @Input() shuffle;
+  @Input() isHolder;
 
   constructor(
     private youtubePlayer: YoutubePlayerService,
@@ -67,8 +68,8 @@ export class VideosPlaylistComponent {
         playlistEl.scrollTop = document.getElementById(shuffled).offsetTop - 100;
       } else {
         if (this.videoPlaylist.length - 1 === inPlaylist) {
-          this.youtubePlayer.playVideo(this.videoPlaylist[0].id, this.videoPlaylist[0].snippet.title);
-          playlistEl.scrollTop = 0;
+          // this.youtubePlayer.playVideo(this.videoPlaylist[0].id, this.videoPlaylist[0].snippet.title);
+          // playlistEl.scrollTop = 0;
         } else {
           this.youtubePlayer.playVideo(this.videoPlaylist[inPlaylist + 1].id, this.videoPlaylist[inPlaylist + 1].snippet.title)
           playlistEl.scrollTop = topPos - 100;

@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { ReactiveFormsModule } from '@angular/forms';
+// Libraries
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 // Components
 import { AppComponent } from './app.component';
 import { MainComponent } from './main/main.component';
@@ -15,17 +17,22 @@ import { YoutubePlayerService } from './shared/services/youtube-player.service';
 import { PlaylistStoreService } from './shared/services/playlist-store.service';
 import { NotificationService } from './shared/services/notification.service';
 import { BrowserNotificationService } from './shared/services/browser-notification.service';
+import { SocketService } from './shared/services/socket.service';
+import { HolderSocketService } from './shared/services/holder-socket.service';
 // Pipes
 import { VideoDurationPipe } from './shared/pipes/video-duration.pipe';
 import { VideoLikesViewsPipe } from './shared/pipes/video-likes-views.pipe';
 import { VideoNamePipe } from './shared/pipes/video-name.pipe';
 import { LazyScrollDirective } from './shared/directives/lazy-scroll/lazy-scroll.directive';
 
+const config: SocketIoConfig = { url: 'http://192.168.1.9:3000', options: {} };
+
 @NgModule({
   imports: [
     BrowserModule,
     HttpModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SocketIoModule.forRoot(config)
   ],
   declarations: [
     AppComponent,
@@ -50,7 +57,13 @@ import { LazyScrollDirective } from './shared/directives/lazy-scroll/lazy-scroll
     YoutubePlayerService,
     PlaylistStoreService,
     NotificationService,
-    BrowserNotificationService
+    BrowserNotificationService,
+    SocketService,
+    HolderSocketService,
+    {
+      provide: "_HOLDER_SOCKET_URL_",
+      useValue: "http://192.168.1.9:3000/holder"
+    }
   ]
 })
 export class AppModule {

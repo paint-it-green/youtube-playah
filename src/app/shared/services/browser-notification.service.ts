@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { NotificationService } from './notification.service';
 
 let _window: any = window;
 
@@ -7,7 +8,9 @@ export class BrowserNotificationService {
   private notifSupported;
   private enabled = false;
 
-  constructor() {
+  constructor(
+    private notificationService: NotificationService
+  ) {
     this.notifSupported = (<any>window).Notification && (<any>Notification).permission !== 'denied' ? true : false;
   }
 
@@ -27,6 +30,7 @@ export class BrowserNotificationService {
 
   public show(name: string): void {
     if (!this.notifSupported || !this.enabled) {
+      this.notificationService.showNotification(name);
       return;
     }
 

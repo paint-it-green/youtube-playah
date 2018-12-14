@@ -18,8 +18,8 @@ body {
   border-radius: 50%;
   width: 40px;
   height: 40px;
-  border: 0.2rem solid rgba(217, 30, 24, 0.5);
-  border-top-color: rgb(52, 73, 94);
+  border: 0.2rem solid rgba(0, 80, 112, 0.5);
+  border-top-color: rgb(0, 80, 112);
   -webkit-animation: spin 1s infinite linear;
   animation: spin 1s infinite linear;
 }

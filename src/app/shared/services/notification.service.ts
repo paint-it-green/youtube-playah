@@ -7,13 +7,15 @@ export class NotificationService {
   constructor() { }
 
   public showNotification(message: string): void {
-    let notification = document.querySelector('.mdl-js-snackbar');
-    let data = {
-      message: message,
-      timeout: this.timeoutDuration
-    };
 
-    notification['MaterialSnackbar'].showSnackbar(data);
+    setTimeout(() => {
+      let notification = document.querySelector('.mdl-js-snackbar');
+      let data = {
+        message: message,
+        timeout: this.timeoutDuration
+      };
+      notification['MaterialSnackbar'].showSnackbar(data);
+    }, 0)
   }
 
 }

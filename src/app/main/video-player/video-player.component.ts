@@ -28,6 +28,8 @@ export class VideoPlayerComponent implements AfterContentInit {
   @Output() exportPlaylist = new EventEmitter();
   @Output() importPlaylist = new EventEmitter();
   @Output() closePlaylist = new EventEmitter();
+  @Input() isHolder;
+
 
   constructor(
     private youtubePlayer: YoutubePlayerService,

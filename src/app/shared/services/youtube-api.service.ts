@@ -19,8 +19,8 @@ export class YoutubeApiService {
   ) { }
 
   searchVideos(query: string): Promise<any> {
+    if(!query || query.length <= 0) query = "Tagalog song";
     const url = `${this.base_url}search?q=${query}&maxResults=${this.max_results}&type=video&part=snippet,id&key=${YOUTUBE_API_KEY}&videoEmbeddable=true`; // tslint:disable-line
-
     return this.http.get(url)
       .map(response => {
         let jsonRes = response.json();
@@ -42,7 +42,6 @@ export class YoutubeApiService {
 
   searchNext(): Promise<any> {
     const url = `${this.base_url}search?q=${this.lastQuery}&pageToken=${this.nextToken}&maxResults=${this.max_results}&type=video&part=snippet,id&key=${YOUTUBE_API_KEY}&videoEmbeddable=true`; // tslint:disable-line
-
     return this.http.get(url)
       .map(response => {
         let jsonRes = response.json();
@@ -61,7 +60,7 @@ export class YoutubeApiService {
   }
 
   getVideos(ids): Promise<any> {
-    const url = `${this.base_url}videos?id=${ids.join(',')}&maxResults=${this.max_results}&type=video&part=snippet,contentDetails,statistics&key=${YOUTUBE_API_KEY}`; // tslint:disable-line
+    const url = `${this.base_url}videos?id=${ids.join(',')}&maxResults=${this.max_results}&type=video&videoEmbeddable=true&part=snippet,contentDetails,statistics,status&restriction=PH&format=5&safeSearch=strict&key=${YOUTUBE_API_KEY}`; // tslint:disable-line
 
     return this.http.get(url)
       .map(results => {

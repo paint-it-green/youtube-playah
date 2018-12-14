@@ -3,6 +3,7 @@ import { YoutubeApiService } from '../shared/services/youtube-api.service';
 import { YoutubePlayerService } from '../shared/services/youtube-player.service';
 import { PlaylistStoreService } from '../shared/services/playlist-store.service';
 import { NotificationService } from '../shared/services/notification.service';
+import { SocketService } from '../shared/services/socket.service';
 
 @Component({
   selector: 'main-block',
@@ -20,14 +21,53 @@ export class MainComponent implements AfterViewInit {
   public shuffle = false;
   public playlistElement: any;
   private pageLoadingFinished = false;
+  public isHolder;
 
   constructor(
     private youtubeService: YoutubeApiService,
     private youtubePlayer: YoutubePlayerService,
     private playlistService: PlaylistStoreService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private socketService: SocketService,
   ) {
+    this.isHolder = localStorage.getItem("holder");
     this.videoPlaylist = this.playlistService.retrieveStorage().playlists;
+    
+    this.socketService.init();
+
+    this.socketService.onRequestSync()
+    .subscribe((res) => {
+      this.socketService.grantSync({
+        room: res,
+        playlist: this.videoPlaylist
+      })
+    })
+    this.socketService.onGrantSync()
+    .subscribe((res:any) => {
+      this.videoPlaylist = res;
+      this.socketService.getCurrent();
+    })
+    this.socketService.onGetCurrent()
+    .subscribe((room) => {
+      this.youtubePlayer.requestCurrent(room);
+    })
+
+    this.socketService.onSuggestVideo()
+    .subscribe((res) => {
+      this.checkAddToPlaylist(res);
+    })
+    this.socketService.onAddVideo()
+    .subscribe((res) => {
+      this.pushSuggestedVideo(res);
+    })
+    this.socketService.onSetCurrent()
+    .subscribe((res) => {
+      this.youtubePlayer.setCurrent(res);
+    })
+    this.socketService.onClearPlaylist()
+    .subscribe((res) => {
+      this.onClearPlaylist();
+    })
   }
 
   ngAfterViewInit() {
@@ -45,18 +85,24 @@ export class MainComponent implements AfterViewInit {
     this.videoList = videos;
   }
 
+  suggestVideo(video: any): void {
+    this.socketService.suggestVideo(video);
+  }
   checkAddToPlaylist(video: any): void {
     if (!this.videoPlaylist.some((e) => e.id === video.id)) {
-      this.videoPlaylist.push(video);
-      this.playlistService.addToPlaylist(video);
-
-      let inPlaylist = this.videoPlaylist.length - 1;
-
-      setTimeout(() => {
-        let topPos = document.getElementById(this.videoPlaylist[inPlaylist].id).offsetTop;
-        this.playlistElement.scrollTop = topPos - 100;
-      });
+      this.socketService.addVideo(video);
     }
+  }
+  pushSuggestedVideo(video: any):void {
+    this.videoPlaylist.push(video);
+    this.playlistService.addToPlaylist(video);
+
+    let inPlaylist = this.videoPlaylist.length - 1;
+
+    setTimeout(() => {
+      let topPos = document.getElementById(this.videoPlaylist[inPlaylist].id).offsetTop;
+      this.playlistElement.scrollTop = topPos - 100;
+    });
   }
 
   repeatActive(val: boolean): void {
@@ -158,6 +204,9 @@ export class MainComponent implements AfterViewInit {
   }
 
   clearPlaylist(): void {
+    this.socketService.clearPlaylist();
+  }
+  onClearPlaylist() {
     this.videoPlaylist = [];
     this.playlistService.clearPlaylist();
     this.notificationService.showNotification('Playlist cleared.');
