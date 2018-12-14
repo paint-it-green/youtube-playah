@@ -25,7 +25,7 @@ import { VideoLikesViewsPipe } from './shared/pipes/video-likes-views.pipe';
 import { VideoNamePipe } from './shared/pipes/video-name.pipe';
 import { LazyScrollDirective } from './shared/directives/lazy-scroll/lazy-scroll.directive';
 
-const config: SocketIoConfig = { url: 'http://192.168.1.9:3000', options: {} };
+const config: SocketIoConfig = { url: 'https://youtube-playah-socket.herokuapp.com/', options: {transports: ['websocket', 'polling', 'flashsocket']} };
 
 @NgModule({
   imports: [
@@ -62,7 +62,7 @@ const config: SocketIoConfig = { url: 'http://192.168.1.9:3000', options: {} };
     HolderSocketService,
     {
       provide: "_HOLDER_SOCKET_URL_",
-      useValue: "http://192.168.1.9:3000/holder"
+      useValue: "http://192.168.1.9:5000/holder"
     }
   ]
 })
