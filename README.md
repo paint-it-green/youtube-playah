@@ -5,37 +5,6 @@
 
 **Inpired by**: [SamirHodzic](https://github.com/SamirHodzic/ngx-youtube-player)
 
-## Quickstart
-
-**Note**: Require Node 4+ together with Npm 3+, also be sure to install
-
-**1- Install [Angular-CLI](https://github.com/angular/angular-cli) (latest 1.5.0) :**
-
-```bash
-$ npm install -g @angular/cli@latest
-```
-
-**2- Clone the project:**
-
-```bash
-$ git clone https://github.com/SamirHodzic/ngx-youtube-player
-$ cd ngx-youtube-player
-```
-
-**3- Install the npm packages described in the package.json :**
-
-```bash
-$ npm install
-```
-
-**4- Transpile typescript into javascript, host the app and monitor the changes :**
-
-```bash
-$ ng serve
-```
-
-Visit http://localhost:4200 and enjoy!
-
 ## Dependencies
 - [Angular 5](https://angular.io/) with [Typescript](https://www.typescriptlang.org/)
 - [Angular CLI](https://cli.angular.io/)
@@ -50,13 +19,8 @@ Visit http://localhost:4200 and enjoy!
 - Create local playlist without authorization
 - Simple Import/Export playlists as JSON
 
-## TODO (Feel free to make pull request for any additional feature)
-- ~~'Now playing' when video is minimized~~
-- ~~Update UI to be fully responsive for mobile/tablet~~
-- ~~Browser notification interface when new song is going to start~~
-- Save multiple playlists and switch between them
-- Write tests
-- ...
+## New Features
+- Add socket io connection for group/company playlist
 
 
 [dependencies]: https://david-dm.org/samirhodzic/ngx-youtube-player.svg
